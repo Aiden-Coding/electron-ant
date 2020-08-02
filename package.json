@@ -1,20 +1,35 @@
 {
+  "name": "ll",
+  "version": "1.0.0",
+  "description": "A minimal Electron application",
+  "main": "./electron/main.js",
   "private": true,
+  "homepage": ".",
   "scripts": {
     "start": "umi dev",
     "build": "umi build",
     "test": "umi test",
     "lint": "eslint {src,mock,tests}/**/*.{js,jsx} --fix",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "electron-start": "electron .",
+    "electron-pack": "umi build && electron-builder --dir",
+    "electron-dist": "umi build && electron-builder",
+    "electron-dev": "concurrently \"wait-on http://localhost:3000 && electron .\" \"cross-env BROWSER=none umi dev\"",
+    "electron-dev-browser": "concurrently \"wait-on http://localhost:3000 && electron .\" \"umi dev\""
   },
   "dependencies": {
-    "dva": "^2.6.0-beta.6",
-    "antd": "^3.19.5",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "better-sqlite3": "^7.1.0",
+    "electron-is-dev": "^1.2.0"
   },
   "devDependencies": {
+    "antd": "^3.19.5",
     "babel-eslint": "^9.0.0",
+    "concurrently": "^5.2.0",
+    "cross-env": "^7.0.2",
+    "dva": "^2.6.0-beta.6",
+    "electron": "^9.1.0",
+    "electron-builder": "^22.7.0",
+    "electron-rebuild": "^1.11.0",
     "eslint": "^5.4.0",
     "eslint-config-umi": "^1.4.0",
     "eslint-plugin-flowtype": "^2.50.0",
@@ -23,14 +38,34 @@
     "eslint-plugin-react": "^7.11.1",
     "husky": "^0.14.3",
     "lint-staged": "^7.2.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-test-renderer": "^16.7.0",
     "umi": "^2.7.7",
-    "umi-plugin-react": "^1.8.4"
+    "umi-plugin-react": "^1.8.4",
+    "wait-on": "^5.1.0"
   },
   "lint-staged": {
-    "*.{js,jsx}": ["eslint --fix", "git add"]
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "engines": {
     "node": ">=8.0.0"
+  },
+  "build": {
+    "appId": "your.id",
+    "mac": {
+      "category": "your.app.category.type",
+      "icon": "./1.png"
+    },
+    "files": [
+      "build/**",
+      "electron/**",
+      "db/**",
+      "./package.json"
+    ],
+    "extends": null
   }
 }
